@@ -1,5 +1,5 @@
 services:
-  postgres:
+  lagonave_pgsql:
     image: postgres:14.5
     restart: unless-stopped 
     environment:
@@ -9,7 +9,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data/
     ports:
-      - 5432:5432
+      - 5433:5432
 
 volumes:
   pgdata:
