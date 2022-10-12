@@ -6,12 +6,14 @@ from sqlalchemy import pool
 from alembic import context
 
 from app.config import settings
-from app.db.pgsql.base_declarative import Base
+from app.db.pgsql.base import Base
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
-config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
+config.set_main_option(
+    "sqlalchemy.url", settings.DATABASE_URL.replace("postgresql+asyncpg", "postgresql")
+)
 target_metadata = Base.metadata
 
 # Interpret the config file for Python logging.
