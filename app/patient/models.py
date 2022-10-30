@@ -16,7 +16,7 @@ class Patient(Base):
     weight = Column(Float)
     phone_number = Column(String, nullable=False)
     address = Column(String)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("lg_user.id"), nullable=False)
+    recorder_id = Column(UUID(as_uuid=True), ForeignKey("lg_user.id"), nullable=False)
     photo_url = Column(String)
 
     @hybrid_property
@@ -31,4 +31,5 @@ class Patient(Base):
             - self.birth_date.year
             - ((today.month, today.day) < (self.birth_date.month, self.birth_date.day))
         )
+
         return age
