@@ -55,5 +55,4 @@ class UserDAL:
 
 
 def get_user_dal(db=Depends(get_db)) -> UserDAL:
-
     return UserDAL(db)

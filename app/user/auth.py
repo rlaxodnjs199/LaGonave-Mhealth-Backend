@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 
 from .schemas import GetUserResponseSchema
-from .dependencies import get_user_dal, UserDAL
+from .dal import get_user_dal, UserDAL
 from .util import encode_token, decode_token
 from .config import auth_config
 

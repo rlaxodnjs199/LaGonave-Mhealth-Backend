@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 
-from .dependencies import UserDAL, get_user_dal
+from .dal import UserDAL, get_user_dal
 from .schemas import CreateUserRequestSchema, CreateUserResponseSchema
 
 router = APIRouter()
