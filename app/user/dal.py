@@ -37,13 +37,17 @@ class UserDAL:
 
     async def get_user_by_id(self, user_id: uuid.UUID) -> User:
         q = await self.db_session.execute(select(User).where(User.id == user_id))
+        user = q.scalars().first()
+        await self.db_session.commit()
 
-        return q.scalars().first()
+        return user
 
     async def get_user_by_username(self, username: str) -> User:
         q = await self.db_session.execute(select(User).where(User.username == username))
+        user = q.scalars().first()
+        await self.db_session.commit()
 
-        return q.scalars().first()
+        return user
 
     async def authenticate(self, username: str, password: str) -> Union[User, None]:
         user = await self.get_user_by_username(username)
