@@ -1,4 +1,5 @@
 from fastapi import Depends
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.pgsql.session import get_db
@@ -15,7 +16,16 @@ class PatientDAL:
         self.db_session.add(new_patient)
         await self.db_session.commit()
 
-        return new_patient.full_name
+        return new_patient
+
+    async def get_patients_by_phone_number(self, phone_number: str):
+        q = await self.db_session.execute(
+            select(Patient).where(Patient.phone_number == phone_number)
+        )
+        patients = q.scalars().all()
+        await self.db_session.commit()
+
+        return patients
 
 
 def get_patient_dal(db=Depends(get_db)) -> PatientDAL:
