@@ -16,6 +16,7 @@ class Patient(Base):
     weight = Column(Float)
     phone_number = Column(String, nullable=False)
     address = Column(String)
+    facility = Column(String)
     recorder_id = Column(UUID(as_uuid=True), ForeignKey("lg_user.id"), nullable=False)
     photo_url = Column(String)
 
