@@ -1,6 +1,7 @@
 from datetime import date
 
 from sqlalchemy import Column, ForeignKey, String, Float, DateTime
+from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 
@@ -20,6 +21,8 @@ class Patient(Base):
     recorder_id = Column(UUID(as_uuid=True), ForeignKey("lg_user.id"), nullable=False)
     photo_url = Column(String)
 
+    checkups = relationship("Checkup")
+
     @hybrid_property
     def full_name(self):
         return self.first_name + " " + self.last_name
@@ -32,5 +35,4 @@ class Patient(Base):
             - self.birth_date.year
             - ((today.month, today.day) < (self.birth_date.month, self.birth_date.day))
         )
-
         return age

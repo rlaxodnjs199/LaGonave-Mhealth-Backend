@@ -1,10 +1,15 @@
+from uuid import UUID
+from typing import Dict
+
 from fastapi import Depends
 from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.pgsql.session import get_db
 from .models import Patient
 from .schemas import CreatePatientRequestSchema
+from app.checkup.models import Checkup
 
 
 class PatientDAL:
@@ -26,6 +31,30 @@ class PatientDAL:
         await self.db_session.commit()
 
         return patients
+
+    async def get_patient_checkups(self, patient_id: UUID):
+        q = await self.db_session.execute(
+            select(Patient)
+            .where(Patient.id == patient_id)
+            .options(selectinload(Patient.checkups))
+        )
+        patient = q.scalars().first()
+        checkups = patient.checkups
+        await self.db_session.commit()
+
+        return checkups
+
+    async def create_patient_checkup(self, patient_id: UUID, checkup_data: Dict):
+        q = await self.db_session.execute(
+            select(Patient)
+            .where(Patient.id == patient_id)
+            .options(selectinload(Patient.checkups))
+        )
+        patient = q.scalars().first()
+        new_checkup = Checkup(data=checkup_data)
+        patient.checkups.append(new_checkup)
+        self.db_session.add(patient)
+        await self.db_session.commit()
 
 
 def get_patient_dal(db=Depends(get_db)) -> PatientDAL:
