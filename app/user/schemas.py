@@ -1,16 +1,30 @@
+from uuid import UUID
+from datetime import datetime
+
 from pydantic import BaseModel, Field
 
 from .enums import RoleEnum
 
 
 class UserSchema(BaseModel):
-    id: int = Field(default=None)
+    id: UUID = Field(...)
     username: str = Field(...)
     role: RoleEnum = Field(...)
 
 
-class GetUserResponseSchema(BaseModel):
+class LoginResponseSchema(BaseModel):
     access_token: str
+    user_id: UUID = Field(...)
+
+
+class GetUserResponseSchema(BaseModel):
+    username: str = Field(...)
+    role: RoleEnum = Field(...)
+    created_at: datetime = Field(...)
+    updated_at: datetime = Field(...)
+
+    class Config:
+        orm_mode = True
 
 
 class CreateUserRequestSchema(BaseModel):

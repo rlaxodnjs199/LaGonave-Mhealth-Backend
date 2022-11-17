@@ -9,6 +9,7 @@ from .schemas import (
     CreatePatientRequestSchema,
     CreatePatientResponseSchema,
     GetPatientResponseSchema,
+    GetPatientDemographicSchema,
 )
 
 router = APIRouter()
@@ -36,9 +37,13 @@ async def get_patients_by_phone_number(
     return patients
 
 
-@router.get("/{patient_id}/demographics")
-async def get_patient_demographics():
-    pass
+@router.get("/{patient_id}/demographics", response_model=GetPatientDemographicSchema)
+async def get_patient_demographics(
+    patient_id: UUID, patient_dal: PatientDAL = Depends(get_patient_dal)
+):
+    patient = await patient_dal.get_patient(patient_id)
+
+    return patient
 
 
 @router.get("/{patient_id}/checkups")

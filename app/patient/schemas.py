@@ -41,3 +41,13 @@ class GetPatientResponseSchema(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class GetPatientDemographicSchema(BaseModel):
+    birth_date: date = Field(...)
+    gender: str = Field(...)
+    height: float = Field(...)
+    weight: float = Field(...)
+
+    class Config:
+        orm_mode = True

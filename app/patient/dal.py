@@ -23,6 +23,15 @@ class PatientDAL:
 
         return new_patient
 
+    async def get_patient(self, patient_id: UUID):
+        q = await self.db_session.execute(
+            select(Patient).where(Patient.id == patient_id)
+        )
+        patient = q.scalars().first()
+        await self.db_session.commit()
+
+        return patient
+
     async def get_patients_by_phone_number(self, phone_number: str):
         q = await self.db_session.execute(
             select(Patient).where(Patient.phone_number == phone_number)
